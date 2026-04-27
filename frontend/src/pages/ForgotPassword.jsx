@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from 'react-toastify'
-import Spinner from "../../../../HOBB-SPRINGS/frontend/src/components/Spinner";
+import Spinner from "../components/Spinner";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
