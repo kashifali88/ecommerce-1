@@ -13,10 +13,11 @@ function Products() {
   const category = searchParams.get("category");
   const search = searchParams.get("search");
 
-  // ✅ NEW STATES
   const [showFilter, setShowFilter] = useState(false);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   // ============================
   // FETCH PRODUCTS
@@ -25,7 +26,7 @@ function Products() {
     try {
       setLoading(true);
 
-      let url = "/api/products/filter?";
+      let url = `${API}/api/products/filter?`;
 
       if (category) url += `category=${category}&`;
       if (search) url += `search=${search}&`;

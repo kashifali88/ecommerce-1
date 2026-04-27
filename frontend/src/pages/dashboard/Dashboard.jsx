@@ -5,6 +5,8 @@ import { signOutUserFailure, signOutUserStart, signOutUserSuccess } from "../../
 export default function Dashboard() {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   if (!currentUser) return null;
 
@@ -21,7 +23,7 @@ export default function Dashboard() {
     try {
       dispatch(signOutUserStart());
 
-      const res = await fetch("/api/auth/logout", {
+      const res = await fetch(`${API}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

@@ -9,6 +9,7 @@ export default function Card({ product }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
+  const API = import.meta.env.VITE_BACKEND_URL;
 
   // =========================
   // CALCULATE AVERAGE RATING
@@ -30,7 +31,7 @@ export default function Card({ product }) {
     }
 
     try {
-      const res = await fetch("/api/cart/", {
+      const res = await fetch(`${API}/api/cart/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

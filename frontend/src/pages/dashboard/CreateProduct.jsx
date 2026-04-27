@@ -15,13 +15,15 @@ function CreateProduct() {
     productImage: "",
     shipping: false,
   });
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   // =========================
   // FETCH CATEGORIES
   // =========================
   const fetchCategories = async () => {
     try {
-      const res = await fetch("/api/category", {
+      const res = await fetch(`${API}/api/category`, {
         credentials: "include",
       });
 
@@ -72,7 +74,7 @@ function CreateProduct() {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/products/create-product", {
+      const res = await fetch(`${API}/api/products/create-product`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -13,6 +13,8 @@ export default function Product() {
   const [comment, setComment] = useState("");
   const [reviews, setReviews] = useState([]);
   const [loadingReview, setLoadingReview] = useState(false);
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
@@ -22,7 +24,7 @@ export default function Product() {
   // =========================
   const fetchProduct = async () => {
     try {
-      const res = await fetch(`/api/products/get-product/${slug}`);
+      const res = await fetch(`${API}/api/products/get-product/${slug}`);
       const data = await res.json();
 
       if (!res.ok || data.success === false) {
@@ -67,7 +69,7 @@ export default function Product() {
     try {
       setLoadingReview(true);
 
-      const res = await fetch(`/api/products/${product._id}/reviews`, {
+      const res = await fetch(`${API}/api/products/${product._id}/reviews`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,7 +108,7 @@ export default function Product() {
   const handleDeleteReview = async (reviewId) => {
     try {
       const res = await fetch(
-        `/api/products/${product._id}/reviews/${reviewId}`,
+        `${API}/api/products/${product._id}/reviews/${reviewId}`,
         {
           method: "DELETE",
           credentials: "include",

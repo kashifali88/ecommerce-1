@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   const { currentUser } = useSelector((state) => state.user);
 
@@ -15,8 +17,8 @@ function Orders() {
       setLoading(true);
 
       const url = currentUser?.role === "admin"
-        ? "/api/orders"
-        : "/api/orders/my";
+        ? `${API}/api/orders`
+        : `${API}/api/orders/my`;
 
       const res = await fetch(url, {
         credentials: "include",

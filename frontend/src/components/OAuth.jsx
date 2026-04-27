@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 export default function OAuth() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+    const API = import.meta.env.VITE_BACKEND_URL;
+
   const handleGoogleSignIn = async(e) => {
 e.preventDefault();
     try {
@@ -19,7 +21,7 @@ e.preventDefault();
       const user = result.user;
       // Send user info to backend for authentication
       dispatch(signInStart());
-      const res = await fetch("/api/auth/google", {
+      const res = await fetch(`${API}/api/auth/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

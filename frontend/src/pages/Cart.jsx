@@ -10,11 +10,13 @@ function Cart() {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+    const API = import.meta.env.VITE_BACKEND_URL;
+
  // FETCH CART FROM BACKEND
   const fetchCart = async () => {
     try {
       setLoading(true)
-      const res = await fetch('/api/cart', {
+      const res = await fetch(`${API}/api/cart`, {
         credentials: "include",
       });
 
@@ -41,7 +43,7 @@ function Cart() {
   // UPDATE QUANTITY
   const handleUpdateQuantity = async (id, quantity) => {
     try {
-      const res = await fetch(`/api/cart/${id}`, {
+      const res = await fetch(`${API}/api/cart/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +67,7 @@ function Cart() {
   // DELETE ITEM
   const handleRemoveItem = async (id) => {
     try {
-      const res = await fetch(`/api/cart/${id}`, {
+      const res = await fetch(`${API}/api/cart/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

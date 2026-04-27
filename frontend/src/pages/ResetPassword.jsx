@@ -10,6 +10,8 @@ export default function ResetPassword() {
     password: "",
     confirmPassword: "",
   });
+    const API = import.meta.env.VITE_BACKEND_URL;
+
   const { token } = useParams();
 
   const handleChange = (e) => {
@@ -28,7 +30,7 @@ setLoading(true);
       return;
     }
   
-    const res = await fetch(`/api/auth/reset-password/${token}`, {
+    const res = await fetch(`${API}/api/auth/reset-password/${token}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

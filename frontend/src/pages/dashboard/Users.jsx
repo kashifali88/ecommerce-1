@@ -5,6 +5,8 @@ import Spinner from "../../components/Spinner";
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   // ======================
   // FETCH USERS
@@ -13,7 +15,7 @@ export default function Users() {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/user");
+      const res = await fetch(`${API}/api/user`);
       const data = await res.json();
 
       if (!res.ok || data.success === false) {

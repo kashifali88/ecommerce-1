@@ -13,6 +13,8 @@ export default function SignUp() {
     email: "",
     password: "",
   });
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   const navigate = useNavigate();
 
@@ -28,7 +30,7 @@ export default function SignUp() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch(`${API}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -18,6 +18,8 @@ function Profile() {
   const fileRef = useRef();
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   // UPLOAD PROFILE IMAGE TO CLOUDINARY
   const uploadImage = async () => {
@@ -64,7 +66,7 @@ function Profile() {
         avatar = await uploadImage();
       }
 
-      const res = await fetch(`/api/user/${currentUser._id}`, {
+      const res = await fetch(`${API}/api/user/${currentUser._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +111,7 @@ function Profile() {
 
       dispatch(deleteUserStart());
 
-      const res = await fetch(`/api/user/${currentUser._id}`, {
+      const res = await fetch(`${API}/api/user/${currentUser._id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

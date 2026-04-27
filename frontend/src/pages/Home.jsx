@@ -10,6 +10,8 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
   const navigate = useNavigate();
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   // CATEGORY IMAGE MAP
   const categoryImages = {
@@ -29,7 +31,7 @@ export default function Home() {
   const fetchProducts = async (pageNumber = 1) => {
     try {
       const res = await fetch(
-        `/api/products/get-products?page=${pageNumber}&limit=16`
+        `${API}/api/products/get-products?page=${pageNumber}&limit=16`
       );
       const data = await res.json();
 
@@ -52,7 +54,7 @@ export default function Home() {
   // ===============================
   const fetchCategories = async () => {
     try {
-      const res = await fetch("/api/category");
+      const res = await fetch(`${API}/api/category`);
       const data = await res.json();
 
       if (!res.ok || data.success === false) {

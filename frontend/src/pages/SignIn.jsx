@@ -14,6 +14,8 @@ export default function SignIn() {
   const { loading, error } = useSelector((state) => state.user)
   const dispatch = useDispatch();
   const navigate = useNavigate();
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   const handleChange = (e) => {
     setFormData({
@@ -30,7 +32,7 @@ export default function SignIn() {
         ? { email: formData.login, password: formData.password }
         : { username: formData.login, password: formData.password };
       dispatch(signInStart());
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(`{$API}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

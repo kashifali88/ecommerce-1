@@ -9,6 +9,8 @@ function Checkout() {
   const [loading, setLoading] = useState(false);
   const [placing, setPlacing] = useState(false);
   const dispatch = useDispatch();
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   const [paymentMethod, setPaymentMethod] = useState("COD");
 
@@ -27,7 +29,7 @@ function Checkout() {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/cart", {
+      const res = await fetch(`${API}/api/cart`, {
         credentials: "include",
       });
 
@@ -84,7 +86,7 @@ function Checkout() {
       // 🔥 STRIPE FLOW (FIX)
       // =========================
       if (paymentMethod === "STRIPE") {
-        const res = await fetch("/api/stripe/create-checkout-session", {
+        const res = await fetch(`${API}/api/stripe/create-checkout-session`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -106,7 +108,7 @@ function Checkout() {
       // =========================
       // 💰 COD FLOW (NORMAL ORDER)
       // =========================
-      const res = await fetch("/api/orders", {
+      const res = await fetch(`{API}/api/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

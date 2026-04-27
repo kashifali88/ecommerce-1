@@ -8,6 +8,8 @@ export default function Contact() {
     email: "",
     message: "",
   });
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   const handleChange = (e) => {
     setForm((prev) => ({
@@ -19,7 +21,7 @@ export default function Contact() {
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  const res = await fetch("/api/contact", {
+  const res = await fetch(`${API}/api/contact`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

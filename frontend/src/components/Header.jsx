@@ -13,6 +13,8 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [profileOpen, setProfileOpen] = useState(false);
+    const API = import.meta.env.VITE_BACKEND_URL;
+
 
   const { currentUser } = useSelector((state) => state.user);
   const { cartItems } = useSelector((state) => state.cart);
@@ -51,7 +53,7 @@ export default function Header() {
     try {
       dispatch(signOutUserStart());
 
-      const res = await fetch("/api/auth/logout", {
+      const res = await fetch(`${API}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
