@@ -10,6 +10,7 @@ import contactRouter from './routes/contact.route.js';
 import categoryRouter from './routes/category.route.js';
 import cartRouter from './routes/cart.route.js';
 import stripeRouter from './routes/stripe.route.js';
+import cors from 'cors';
 
 dotenv.config()
 
@@ -20,6 +21,10 @@ const server = express();
             
 server.use(express.json());
 server.use(cookieParser()); 
+server.use(cors({
+    origin: "https://ecommerce-n9p5.onrender.com",
+    credentials: true
+}))
 
 
 
