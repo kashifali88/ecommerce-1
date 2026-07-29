@@ -5,6 +5,7 @@ import { signInStart, signInFailure, signInSuccess } from "../redux/userSlice";
 import OAuth from "../components/OAuth";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
+import { useEffect } from "react";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
@@ -23,6 +24,10 @@ export default function SignIn() {
       [e.target.id]: e.target.value,
     });
   };
+
+  useEffect(() => {
+  dispatch(signInFailure(null));
+}, [dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
