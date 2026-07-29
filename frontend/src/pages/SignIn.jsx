@@ -32,7 +32,7 @@ export default function SignIn() {
         ? { email: formData.login, password: formData.password }
         : { username: formData.login, password: formData.password };
       dispatch(signInStart());
-      const res = await fetch(`{$API}/api/auth/login`, {
+      const res = await fetch(`${API}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
