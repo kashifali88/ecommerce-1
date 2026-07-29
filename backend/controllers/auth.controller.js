@@ -71,7 +71,7 @@ export const login = catchAsync(async (req, res, next) => {
 
 // google login
 export const google = catchAsync(async (req, res, next) => {
-  const { email, username, avatar } = req.body;
+  const { email, username, profileImage } = req.body;
 
   // find user
   const user = await User.findOne({ email });

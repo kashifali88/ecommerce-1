@@ -40,7 +40,9 @@ export default function SignUp() {
       const data = await res.json();
       if (!res.ok || data.success === false) {
         setError(data.message || "Failed to sign-up.");
+        return;
       } else {
+        setError(null);
         toast.success("Registration successful! Please log in.");
         navigate("/login");
       }

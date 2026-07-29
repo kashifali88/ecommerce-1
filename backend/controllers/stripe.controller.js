@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import Cart from "../models/cart.model.js";
-
-
+import dotenv from 'dotenv';
+dotenv.config()
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createCheckoutSession = async (req, res) => {

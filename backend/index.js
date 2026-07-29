@@ -14,7 +14,6 @@ import cors from 'cors';
 
 dotenv.config()
 
-
 const server = express();
 
 // middlewares
@@ -22,7 +21,9 @@ const server = express();
 server.use(express.json());
 server.use(cookieParser()); 
 server.use(cors({
-    origin: "https://ecommerce-n9p5.onrender.com",
+    origin: [ "https://ecommerce-n9p5.onrender.com",
+    "http://localhost:5173",
+    ],
     credentials: true
 }))
 

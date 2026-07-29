@@ -130,7 +130,7 @@ export const deleteUser = catchAsync(async (req, res, next) => {
     return next(errorHandler(404, "User does not exist"));
   }
 
-  // 🔥 PASSWORD CHECK (THIS WAS MISSING)
+  //  PASSWORD CHECK 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
