@@ -43,6 +43,7 @@ export default function SignIn() {
       const data = await res.json();
       if (!res.ok || data.success === false) {
         dispatch(signInFailure(data.message || "Login failed"));
+        return;
       } else {
         dispatch(signInSuccess(data.userWithoutPassword));
         toast.success(data.message || "Login successful");

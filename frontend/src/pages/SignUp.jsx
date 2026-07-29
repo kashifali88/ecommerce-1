@@ -111,6 +111,9 @@ export default function SignUp() {
         <div className="mt-3">
           <OAuth />
         </div>
+        { error && 
+        <p className="text-red-600 text-sm">{error}</p>
+        }
 
         {/* FOOTER */}
         <p className="text-sm text-center mt-6 text-gray-400">
