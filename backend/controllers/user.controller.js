@@ -107,12 +107,20 @@ export const updateUser = catchAsync(async (req, res, next) => {
     id,
     { $set: updateData },
     { new: true }
-  ).select("-password");
+  );
+  await updatedUser.save();
+  // generate new jwt token
+  const token = jwt.sign({_id: updatedUser._id}, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+  });
+  const {password, ...userInfo} = updatedUser._doc;
 
   res.status(200).json({
     success: true,
     message: "User updated successfully",
-    updatedUser,
+    userInfo,
   });
 });
 
