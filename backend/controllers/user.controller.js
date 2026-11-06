@@ -51,10 +51,12 @@ export const login = catchAsync(async (req, res, next) => {
     { expiresIn: "7d" },
   );
   // send cookie
-  res.cookie("token", token, {
-    httpOnly: true,
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
+ res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
   res.status(200).json({success:true, message: 'User logged in successfully', user})
 });
 
@@ -67,7 +69,7 @@ export const getUsers = catchAsync(async (req, res, next) => {
 // get single user
 export const getUser = catchAsync(async (req, res, next) => {
   const id = req.params.id;
-  const user = await User.findOneById(id);
+  const user = await User.findById(id);
   if (!user) {
     return next(errorHandler(404, "User does not exist"));
   }
@@ -75,22 +77,46 @@ export const getUser = catchAsync(async (req, res, next) => {
 });
 
 // update user
+
 export const updateUser = catchAsync(async (req, res, next) => {
   const id = req.params.id;
 
-  const user = await User.findById(id);
+  // Check that the logged-in user owns this account
+  if (!req.user || String(req.user.id) !== String(id)) {
+    return next(errorHandler(403, "You are not allowed to update this user"));
+  }
+
+  // Find user and include password for password comparison
+  const user = await User.findById(id).select("+password");
+
   if (!user) {
     return next(errorHandler(404, "User not found"));
   }
 
-  // check authorization safely
-  if (!req.user || String(req.user.id) !== String(id)) {
-  return next(errorHandler(403, "You are not allowed to update this user"));
-}
-  let updateData = { ...req.body };
+  // Only allow these fields to be updated
+  const updateData = {
+    username: req.body.username,
+    email: req.body.email,
+    avatar: req.body.avatar,
+  };
 
-  // password update logic
-  if (req.body.oldPassword && req.body.newPassword) {
+  // Remove undefined fields
+  Object.keys(updateData).forEach((key) => {
+    if (updateData[key] === undefined) {
+      delete updateData[key];
+    }
+  });
+
+  // Password update logic
+  if (req.body.oldPassword || req.body.newPassword) {
+    if (!req.body.oldPassword || !req.body.newPassword) {
+      return next(errorHandler(400, "Please enter both old and new passwords"));
+    }
+
+    if (req.body.oldPassword === req.body.newPassword) {
+      return next(errorHandler(400, "New password cannot be the same as old password"));
+    }
+
     const isMatch = await bcrypt.compare(
       req.body.oldPassword,
       user.password
@@ -106,23 +132,33 @@ export const updateUser = catchAsync(async (req, res, next) => {
   const updatedUser = await User.findByIdAndUpdate(
     id,
     { $set: updateData },
-    { new: true }
-  );
-  await updatedUser.save();
-  // generate new jwt token
-  const token = jwt.sign({_id: updatedUser._id}, process.env.JWT_SECRET_KEY, { expiresIn: "7d" });
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: true,
-  });
-  const {password, ...userInfo} = updatedUser._doc;
+    { new: true, runValidators: true }
+  ).select("-password");
 
+  // Create a consistent JWT payload
+  const token = jwt.sign(
+    {
+      id: updatedUser._id,
+      role: updatedUser.role,
+    },
+    process.env.JWT_SECRET_KEY,
+    { expiresIn: "7d" }
+  );
+
+  // Set updated authentication cookie
+ res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
   res.status(200).json({
     success: true,
     message: "User updated successfully",
-    userInfo,
+    updatedUser,
   });
 });
+
 
 export const deleteUser = catchAsync(async (req, res, next) => {
   const { password } = req.body;

@@ -80,7 +80,7 @@ function Profile() {
         dispatch(updateUserFailure(data.message || "Update user failed"));
         return;
       }
-      dispatch(updateUserSuccess(data.userInfo));
+      dispatch(updateUserSuccess(data.updatedUser));
       toast.success("User updated successfully");
     } catch (error) {
       dispatch(updateUserFailure(error.message));
