@@ -21,7 +21,7 @@ const server = express();
 server.use(express.json());
 server.use(cookieParser()); 
 server.use(cors({
-    origin: [ "https://ecommerce-n9p5.onrender.com",
+    origin: [ "https://ecommerce-1-frontend-vbmq.onrender.com",
     "http://localhost:5173",
     ],
     credentials: true
