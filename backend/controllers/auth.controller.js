@@ -29,44 +29,51 @@ export const register = catchAsync(async (req, res, next) => {
 
 // login user
 export const login = catchAsync(async (req, res, next) => {
-     const { username, email, password } = req.body;
-     if (!username && !email) {
-       return next(errorHandler(400, "Please enter Email or Username"));
-     }
-     if (!password) {
-       return next(errorHandler(400, "Please enter Password"));
-     }
-     const query = email ? {email:email} : {username:username}
-     const user = await User.findOne(query);
-     if (!user) {
-       return next(errorHandler(404, "User not found"));
-     }
-     const isPasswordValid = await bcrypt.compare(password, user.password);
-     if (!isPasswordValid) {
-       return next(errorHandler(401, "invalid credentials"));
-     }
+  const { username, email, password } = req.body;
 
-     const token = jwt.sign(
-       { id: user._id, role: user.role },
-       process.env.JWT_SECRET_KEY,
-       { expiresIn: "7d" },
-     );
-     console.log(token);
-     
-     res.cookie("token", token, {
-       httpOnly: true,
-     });
-     const { password: pass, ...userWithoutPassword } = user._doc;
-     res
-       .status(200)
-       .json({
-         success: true,
-         message: "User  logged in successfully",
-         userWithoutPassword,
-       });
-   
+  if (!username && !email) {
+    return next(errorHandler(400, "Please enter Email or Username"));
+  }
+
+  if (!password) {
+    return next(errorHandler(400, "Please enter Password"));
+  }
+
+  const query = email ? { email } : { username };
+
+  const user = await User.findOne(query).select("+password");
+
+  if (!user) {
+    return next(errorHandler(404, "User not found"));
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    return next(errorHandler(401, "Invalid credentials"));
+  }
+
+  const token = jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET_KEY,
+    { expiresIn: "7d" }
+  );
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  const { password: pass, ...userWithoutPassword } = user._doc;
+
+  res.status(200).json({
+    success: true,
+    message: "User logged in successfully",
+    userWithoutPassword,
+  });
 });
-
 // --------------------------------------------------------------------------------------------------------- //
 
 // google login
@@ -82,9 +89,11 @@ export const google = catchAsync(async (req, res, next) => {
       { expiresIn: "7d" },
     );
     res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
     const { password: pass, ...userWithoutPassword } = user._doc;
     res.status(200).json({
       success: true,

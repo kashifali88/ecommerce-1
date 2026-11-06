@@ -79,7 +79,7 @@ useEffect(() => {
                     Order ID: {order._id}
                   </p>
 
-                  {currentUser?.isAdmin && (
+                  {currentUser?.role === "admin" && (
                     <p className="text-sm text-gray-500">
                       User: {order.user?.username}
                     </p>

@@ -146,7 +146,7 @@ export const updateUser = catchAsync(async (req, res, next) => {
   );
 
   // Set updated authentication cookie
- res.cookie("token", token, {
+res.cookie("token", token, {
   httpOnly: true,
   secure: true,
   sameSite: "none",
