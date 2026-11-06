@@ -53,10 +53,19 @@ export default function Footer() {
 
       </div>
 
-      {/* BOTTOM */}
-      <div className="border-t border-gray-800 text-center py-4 text-sm text-gray-500">
-        © {new Date().getFullYear()} ECOMMERCE. All rights reserved.
-      </div>
+     
+{/* BOTTOM */}
+<div className="border-t border-gray-800 text-center py-4 text-sm text-gray-500">
+  <p>
+    © {new Date().getFullYear()} ECOMMERCE. All rights reserved.
+  </p>
+  <p className="mt-1">
+    Made with ❤️ by{" "}
+    <span className="text-yellow-400 font-semibold hover:text-yellow-300 transition">
+      Kashif Ali
+    </span>
+  </p>
+</div>
 
     </footer>
   );
