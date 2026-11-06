@@ -84,10 +84,9 @@ export const updateUser = catchAsync(async (req, res, next) => {
   }
 
   // check authorization safely
-  if (!req.user || req.user.id !== id) {
-    return next(errorHandler(403, "You are not allowed to update this user"));
-  }
-
+  if (!req.user || String(req.user.id) !== String(id)) {
+  return next(errorHandler(403, "You are not allowed to update this user"));
+}
   let updateData = { ...req.body };
 
   // password update logic
